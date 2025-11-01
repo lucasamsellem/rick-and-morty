@@ -2,7 +2,8 @@
 
 import Image from 'next/image';
 import { useState } from 'react';
-import type { Character } from '../server/CharacterList';
+import type { Character } from '@/store/useCharacters';
+import Link from 'next/link';
 
 type CharacterCardProps = {
   character: Character;
@@ -13,14 +14,16 @@ function addPlural(count: number, word: string): string {
 }
 
 export default function CharacterCard({ character }: CharacterCardProps) {
+  const { name, status, id, episode, gender, image } = character;
+
   const [state, setState] = useState({
     isGuessing: false,
     hasGuessed: false,
     guess: '',
   });
 
-  const nbEpisodes = character.episode.length;
-  const isCorrect = state.guess === character.gender.toLowerCase();
+  const nbEpisodes = episode.length;
+  const isCorrect = state.guess === gender.toLowerCase();
 
   const toggleGuessMode = () =>
     setState((prev) => ({ ...prev, isGuessing: !prev.isGuessing, hasGuessed: false, guess: '' }));
@@ -35,20 +38,16 @@ export default function CharacterCard({ character }: CharacterCardProps) {
 
   return (
     <li className='grid grid-cols-[auto_1fr_1fr] items-center gap-x-5 rounded-xl p-2 shadow-white transition'>
-      <Image
-        src={character.image}
-        alt={character.name}
-        width={150}
-        height={150}
-        className='rounded-full'
-      />
+      <Image src={image} alt={name} width={150} height={150} className='rounded-full' />
 
       <div>
-        <h2 className='text-2xl font-semibold'>{character.name}</h2>
+        <Link href={`character/${id}`} className='text-2xl font-semibold hover:underline'>
+          {name}
+        </Link>
         <h3 className='text-lg'>
           Appeared in {nbEpisodes} {addPlural(nbEpisodes, 'episode')}
         </h3>
-        <h4 className='opacity-70'>{character.status}</h4>
+        <h4 className='opacity-70'>{status}</h4>
       </div>
 
       <div className='flex items-center gap-x-5'>

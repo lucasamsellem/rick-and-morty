@@ -1,4 +1,4 @@
-import { BASE_URL } from '../constants/constants';
+import { BASE_URL } from '@/constants/constants';
 
 const fetchApi = async (endpoint: string) => {
   try {
@@ -7,7 +7,7 @@ const fetchApi = async (endpoint: string) => {
     if (!res.ok) throw new Error('Failed to fetch');
 
     const data = await res.json();
-    return data;
+    return typeof data === 'string' ? JSON.parse(data) : data;
   } catch (error) {
     console.log(error);
   }
