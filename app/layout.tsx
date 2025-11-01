@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import './globals.css'
+import Header from '@/components/server/Header'
 
 export const metadata: Metadata = {
   title: 'Rick and Morty',
@@ -13,7 +14,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`antialiased`}>{children}</body>
+      <body className={`antialiased`}>
+        <div className="p-5">
+          <Header />
+          {children}
+        </div>
+      </body>
     </html>
   )
 }
